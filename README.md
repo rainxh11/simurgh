@@ -1,5 +1,5 @@
 [![NPM](https://img.shields.io/npm/v/qwik-simurgh?color=blue)](https://www.npmjs.com/package/qwik-simurgh)
-[![MIT License](https://img.shields.io/github/license/rainxh11/simurgh.svg?color=cyan)](https://github.com/rainxh11/simurgh/raw/main/LICENSE)
+[![MIT License](https://img.shields.io/github/license/rainxh11/simurgh.svg?color=cyan)](https://github.com/rainxh11/simurgh/blob/next/LICENSE)
 
 # qwik-simurgh for [Qwik](https://qwik.builder.io/)
 
