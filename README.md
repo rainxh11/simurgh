@@ -1,47 +1,104 @@
-# Qwik Library ⚡️
+[![NPM](https://img.shields.io/npm/v/qwik-querysignal?color=blue)](https://www.npmjs.com/package/simurgh)
+[![MIT License](https://img.shields.io/github/license/rainxh11/qwik-querysignal.svg?color=cyan)](https://github.com/rainxh11/simurgh/blob/next/LICENSE)
 
-- [Qwik Docs](https://qwik.builder.io/)
-- [Discord](https://qwik.builder.io/chat)
-- [Qwik on GitHub](https://github.com/BuilderIO/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
-- [Partytown](https://partytown.builder.io/)
-- [Mitosis](https://github.com/BuilderIO/mitosis)
-- [Builder.io](https://www.builder.io/)
+# simurgh for [Qwik](https://qwik.builder.io/)
 
----
+An asynchronous state manager for [Qwik](https://qwik.builder.io/) - similar to the excellent
+libraries of [Tanstack Query](https://tanstack.com/query/latest).
 
-## Project Structure
+## Features
 
-Inside your project, you'll see the following directories and files:
+- 🐦️ Simple & familiar API to *Tanstack Query*, why re-invent the wheel.
+- 🕙 Built-in [caching](#caching), [resiliency strategy (retries...etc)](#failure-resiliency), automatic refetching and
+  much more.
+- ️🧩 Support of [custom cache stores](#custom-cache-store), with 2 built-in stores ([InMemory & Browser
+  LocalStorage](#included-stores)).
+- 📃 _**in progress:**_ Support for  [paginated & infinite queries with`useInfiniteQuery()`](#infinite-query)
+- ⚡️ _**in progress:**_ Support for [mutation with `useMutation()`](#mutation)
 
-```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── index.ts
-```
+### Other cool features made possible due to Qwik:
 
-- `src/components`: Recommended directory for components.
+- 🚥 Execute queries, mutations on a separate worker thread freeing up the main thread using `worker$()`
+- 🚥 Or in server using `server$()`
 
-- `index.ts`: The entry point of your component library, make sure all the public components are exported from this file.
+## Under the hood:
 
-## Development
+`useQuerySignal()`, `useQueryStringSignal()` and `useQueryArraySignal()` track current route url search-params for any
+changes and vice versa tracks the returned signal state and updates the search-params.
+it uses Qwik's builtin `useNavigation()` under the hood to navigate to the updated url
 
-Development mode uses [Vite's development server](https://vitejs.dev/). For Qwik during development, the `dev` command will also server-side render (SSR) the output. The client-side development modules are loaded by the browser.
+## Installation
 
-```
-pnpm dev
+```shell
+pnpm add simurgh
 ```
 
-> Note: during dev mode, Vite will request many JS files, which does not represent a Qwik production build.
-
-## Production
-
-The production build should generate the production build of your component library in (./lib) and the typescript type definitions in (./lib-types).
-
+```shell
+yarn add simurgh
 ```
-pnpm build
+
+```shell
+npm install simurgh
 ```
+
+# Integration:
+
+- To use *simurgh* you need to use the `SimurghProvider` context provider + the store that will hold the cached queries:
+
+```tsx
+// src/routes/layout.tsx
+import {component$, Slot} from "@builder.io/qwik";
+import type {RequestHandler} from "@builder.io/qwik-city";
+import {InMemoryCacheStore, SimurghProvider} from "simurgh";
+
+export const onGet: RequestHandler = async ({cacheControl}) => {...
+};
+
+export default component$(() => {
+    return (
+        <SimurghProvider store$={() => new InMemoryCacheStore()}>
+            <Slot/>
+        </SimurghProvider>
+    );
+});
+```
+
+# Example Usage:
+
+## Simple query with 30 seconds cache:
+
+```tsx
+import {$, component$, useSignal} from "@builder.io/qwik";
+import {useQuery} from "simurgh";
+
+export default component$(() => {
+    const search = useSignal<string | undefined>("");
+    const {data, isLoading, isSuccess, isError, errors} = useQuery<string, string, any>({
+        queryKey: [search],
+        queryFn$: $(() =>
+            fetch("https://fakestoreapi.com/products/" + search.value)
+                .then((res) => res.text())),
+        select$: $((res: any) => res),
+        refetchOnWindowFocus: false,
+        staleTime: 30 * 1000
+    });
+    return <div class="m-12 flex flex-col gap-1">
+        <h1 class="text-3xl">🐦 Simurgh </h1>
+        <input class="rounded-md border-2 border-blue-400 px-2 py-1 hover:border-blue-700"
+               value={search.value}
+               onInput$={(e) => (search.value = e.target?.value)}
+        />
+        {isLoading.value && <div>Loading data...</div>}
+        {isSuccess.value && <div> Data :{data.value}</div>}
+    </div>
+});
+```
+
+![Example](https://raw.githubusercontent.com/rainxh11/simurgh/main/assets/usequery-demo-1.gif)
+
+*Automatic refetching when search value changes; fetches from cache after the initial request until for the duration of
+the cache window*
+
+### *more documentations coming soon...*
+
+#### This project is still under development with little to none proper testing, so expect many bugs🐞 while using it. 
