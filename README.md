@@ -21,12 +21,6 @@ libraries of [Tanstack Query](https://tanstack.com/query/latest).
 - 🚥 Execute queries, mutations on a separate worker thread freeing up the main thread using `worker$()`
 - 🚥 Or in server using `server$()`
 
-## Under the hood:
-
-`useQuerySignal()`, `useQueryStringSignal()` and `useQueryArraySignal()` track current route url search-params for any
-changes and vice versa tracks the returned signal state and updates the search-params.
-it uses Qwik's builtin `useNavigation()` under the hood to navigate to the updated url
-
 ## Installation
 
 ```shell
