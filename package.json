@@ -1,7 +1,27 @@
 {
-  "name": "simurgh",
+  "name": "qwik-simurgh",
   "version": "0.8.0-beta",
-  "description": "Async State Manager for Qwik similar to React Query",
+  "description": "Async State Manager for Qwik similar to Tanstack's React Query",
+  "bugs": {
+    "url": "https://github.com/rainxh11/simurgh/issues"
+  },
+  "homepage": "https://github.com/rainxh11/simurgh#readme",
+  "author": "Ahmed Chakhoum (Github: rainxh11)",
+  "license": "MIT",
+  "keywords": [
+    "use-query",
+    "state-management",
+    "async",
+    "qwik",
+    "query",
+    "hooks",
+    "qwik-simurgh"
+  ],
+  "publishConfig": {
+    "ignore": [
+      "assets/"
+    ]
+  },
   "main": "./lib/index.qwik.mjs",
   "qwik": "./lib/index.qwik.mjs",
   "types": "./lib-types/index.d.ts",

@@ -1,7 +1,7 @@
-[![NPM](https://img.shields.io/npm/v/qwik-querysignal?color=blue)](https://www.npmjs.com/package/simurgh)
-[![MIT License](https://img.shields.io/github/license/rainxh11/qwik-querysignal.svg?color=cyan)](https://github.com/rainxh11/simurgh/blob/next/LICENSE)
+[![NPM](https://img.shields.io/npm/v/qwik-querysignal?color=blue)](https://www.npmjs.com/package/qwik-simurgh)
+[![MIT License](https://img.shields.io/github/license/rainxh11/qwik-querysignal.svg?color=cyan)](https://github.com/rainxh11/qwik-simurgh/blob/next/LICENSE)
 
-# simurgh for [Qwik](https://qwik.builder.io/)
+# qwik-simurgh for [Qwik](https://qwik.builder.io/)
 
 An asynchronous state manager for [Qwik](https://qwik.builder.io/) - similar to the excellent
 libraries of [Tanstack Query](https://tanstack.com/query/latest).
@@ -30,26 +30,27 @@ it uses Qwik's builtin `useNavigation()` under the hood to navigate to the updat
 ## Installation
 
 ```shell
-pnpm add simurgh
+pnpm add qwik-simurgh
 ```
 
 ```shell
-yarn add simurgh
+yarn add qwik-simurgh
 ```
 
 ```shell
-npm install simurgh
+npm install qwik-simurgh
 ```
 
 # Integration:
 
-- To use *simurgh* you need to use the `SimurghProvider` context provider + the store that will hold the cached queries:
+- To use *qwik-simurgh* you need to use the `SimurghProvider` context provider + the store that will hold the cached
+  queries:
 
 ```tsx
 // src/routes/layout.tsx
 import {component$, Slot} from "@builder.io/qwik";
 import type {RequestHandler} from "@builder.io/qwik-city";
-import {InMemoryCacheStore, SimurghProvider} from "simurgh";
+import {InMemoryCacheStore, SimurghProvider} from "qwik-simurgh";
 
 export const onGet: RequestHandler = async ({cacheControl}) => {...
 };
@@ -69,7 +70,7 @@ export default component$(() => {
 
 ```tsx
 import {$, component$, useSignal} from "@builder.io/qwik";
-import {useQuery} from "simurgh";
+import {useQuery} from "qwik-simurgh";
 
 export default component$(() => {
     const search = useSignal<string | undefined>("");
