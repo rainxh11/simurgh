@@ -1,6 +1,6 @@
 {
   "name": "qwik-simurgh",
-  "version": "0.8.1-beta",
+  "version": "0.8.2-beta",
   "description": "Async State Manager for Qwik similar to Tanstack's React Query",
   "bugs": {
     "url": "https://github.com/rainxh11/simurgh/issues"

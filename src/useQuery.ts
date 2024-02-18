@@ -6,6 +6,7 @@ import {
   useOnWindow,
   useSignal,
   useTask$,
+  useVisibleTask$,
 } from "@builder.io/qwik";
 import { Nullable, unMaybe, withRetry } from "./utils";
 import { isServer } from "@builder.io/qwik/build";
@@ -16,8 +17,13 @@ export function useQuery<TResponse, TError, TSelect>(
   props: UseQueryProps<TResponse, TError, TSelect>,
 ): UseQueryReturn<TSelect, TError> {
   const context = useContext(SimurghContext);
+  const initialCacheKey = props.initialQueryKey?.join("_");
+
   const cacheKey = useComputed$(() => {
-    return props.queryKey.map((x) => unMaybe(x)).join("_");
+    const key = props.queryKey.map((x) => unMaybe(x)).join("_");
+    return initialCacheKey && initialCacheKey === key && props.initialData
+      ? initialCacheKey
+      : key;
   });
 
   const enabled = useComputed$(() => props.enabled?.value ?? true);
@@ -72,6 +78,13 @@ export function useQuery<TResponse, TError, TSelect>(
       isStale: isStale.value,
     }));
     if (isServer) return;
+    if (options.key === initialCacheKey && props.initialData) {
+      await context.value?.cacheStore.set(
+        initialCacheKey,
+        props.initialData,
+        options.staleTime,
+      );
+    }
 
     queryLoading.value = true;
     if (!isStale.value && !shouldRefetch.value) {

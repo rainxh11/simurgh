@@ -29,6 +29,7 @@ export type UseQueryProps<
   queryFn$: QRL<() => Promise<TData>>;
   select$?: QRL<(response: TData) => TSelect>;
   initialData?: TSelect;
+  initialQueryKey?: string[];
 } & QueryEventsOptions<TData, TError> &
   QueryOptions &
   QueryRefetchIntervalOptions &
